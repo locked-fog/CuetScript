@@ -1,8 +1,8 @@
-# CuetScript 技术设计文档
+# CuetScript 项目设计文档
 
-版本：Draft 0.3
+版本：Draft 0.4
 
-本版补充场景草稿、角色知情范围、Session 上下文重建和整轮提交规则，并修订 Writer 结束协议。技术栈尚未定型。
+本版在 Draft 0.3 的场景草稿、知情范围、Session 重建与整轮提交规则上，确定首期 RAG、DeepSeek 官方 API 和 Node.js 26 基线。实现方案见 [技术设计文档](technical-design.md)。
 
 ## 1. 项目定义
 
@@ -1249,7 +1249,7 @@ insertion depth
 
 # 29. Lorebook RAG
 
-计划使用 SiliconFlow API 提供的：
+首期部署必须具备完整 Lorebook RAG，使用 SiliconFlow API 提供的：
 
 ```text
 Qwen/Qwen3-Embedding-8B
@@ -1265,6 +1265,8 @@ Lore 索引文本为：
 ```
 
 `id` 只用于程序引用，不参与 Embedding。
+
+Embedding、向量召回、Reranker 和源版本校验均属于首期范围。不能用关键词搜索、固定结果或仅拼接全文替代 RAG 验收；可后置的是专用向量服务及大规模索引优化。
 
 ---
 
@@ -1830,7 +1832,7 @@ Fork 只继承分叉点之前的有效信息。Input Commit 上的恢复位置�
 - Token 统计；
 - API 错误。
 
-CuetScript 使用 Provider Adapter 隔离这些差异。
+CuetScript 使用 Provider Adapter 隔离这些差异。首期至少适配 DeepSeek 官方 API；Gemini Antigravity 接入参考 dsh-agy，在真实认证、工具往返和恢复验证通过后启用。后者不作为 DeepSeek 官方 API 的替代。
 
 例如：
 
@@ -2291,4 +2293,4 @@ Notebook 保存尚未成为事实的剧情规划、暗线和待回收内容，�
 
 协议、事务与恢复需用确定性故障注入验证；角色表现与知情边界需用真实模型和完整输入输出评议。前者通过不能替代后者。
 
-MVP 优先完成串行 Actor、单分支结果发布、草稿修订和真实场景闭环，再验证分支恢复。Actor 并行、复杂模型路由和专用向量服务后置。本文不新增审核 Agent，不要求知识图谱或固定心理数值。
+MVP 必须包含 DeepSeek 官方 API、完整 SiliconFlow Lorebook RAG、串行 Actor、单分支结果发布、草稿修订和真实场景闭环，再验证分支恢复。运行时使用当前计算机已安装的 Node.js 26，核查版本为 v26.8.1。Gemini Antigravity 的可行性依据与接入验收见技术文档。Actor 并行、复杂模型路由和专用向量服务后置，RAG 功能本身不后置。本文不新增审核 Agent，不要求知识图谱或固定心理数值。
