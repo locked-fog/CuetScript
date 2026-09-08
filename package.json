@@ -8,16 +8,18 @@
     "node": ">=26 <27"
   },
   "bin": {
-    "cuet": "dist/cli/index.js"
+    "cuet": "dist/cli/index.js",
+    "cuet-web": "dist/web/index.js"
   },
   "scripts": {
     "build": "tsc -p tsconfig.build.json",
     "typecheck": "tsc --noEmit",
-    "test": "vitest run",
-    "check": "npm run typecheck && npm test && npm run build",
+    "test": "npm run build && vitest run",
+    "check": "npm run typecheck && npm test",
     "cuet": "node dist/cli/index.js",
     "format": "prettier --write \"src/**/*.ts\" \"tests/**/*.ts\" \"scripts/*.mjs\"",
-    "format:check": "prettier --check \"src/**/*.ts\" \"tests/**/*.ts\" \"scripts/*.mjs\""
+    "format:check": "prettier --check \"src/**/*.ts\" \"tests/**/*.ts\" \"scripts/*.mjs\"",
+    "web": "node dist/web/index.js"
   },
   "dependencies": {
     "ajv": "8.20.0",

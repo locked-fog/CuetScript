@@ -95,7 +95,7 @@ export class GitStory {
       rmSync(lock, { force: true });
     }
   }
-  prepare(base: string, changes: Record<string, string>, message: string): string {
+  prepare(base: string, changes: Record<string, string | null>, message: string): string {
     const temporary = mkdtempSync(join(tmpdir(), 'cuet-index-'));
     const env = { GIT_INDEX_FILE: join(temporary, 'index') };
     try {
@@ -107,6 +107,10 @@ export class GitStory {
         for (const parent of parents)
           if (this.git(['ls-tree', base, '--', parent]).startsWith('120000'))
             fail('invalid_path', 'Symlink in output path');
+        if (content === null) {
+          this.git(['update-index', '--force-remove', '--', path], undefined, env);
+          continue;
+        }
         const blob = this.git(['hash-object', '-w', '--stdin'], content).trim();
         this.git(['update-index', '--add', '--cacheinfo', '100644', blob, path], undefined, env);
       }

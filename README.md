@@ -104,3 +104,43 @@ npm pack
 自动测试不使用真实密钥。真实 API 验收需显式调用 `provider check`、`lore index/search` 和 `run`；其中会产生模型服务用量。`scripts/verify-antigravity.mjs` 提供跨三个进程的签名回放验证。
 
 真实故事、凭据和执行日志不要提交到源码仓库。参考 dsh-agy 的代码来源和许可见 [third-party](third-party/README.md)。
+
+## Web 界面与手机访问
+
+完成 `npm ci` 和 `npm run build` 后，在项目目录启动：
+
+```sh
+npm run web
+```
+
+打开终端显示的本机链接即可。默认监听 `127.0.0.1:3210`，每次启动生成访问口令；带 `#token=...` 的本机链接会自动连接，口令只保存在当前浏览器标签页会话中。
+
+Web 服务默认管理 `./stories/` 下的独立故事仓库。可以直接在网页创建示例故事，或使用 `--stories-dir /path/to/stories` 指向已有故事的父目录。故事目录名称使用英文、数字、`-`、`_`，不支持软链接。不会扫描其他位置或搬动已有故事。
+
+本机约定路径存在时，会自动读取以下外部配置（不复制到故事或源码）：
+
+- `~/.config/llm-api-keys/deepseek-api-key`
+- `~/.config/llm-api-keys/siliconflow-api-key`
+- `~/.config/cuetscript/antigravity/`
+
+也可通过 `--deepseek-key-file`、`--siliconflow-key-file`、`--agy-auth-dir` 覆盖；前两项对应环境变量为 `CUET_DEEPSEEK_KEY_FILE`、`CUET_SILICONFLOW_KEY_FILE`，Antigravity 沿用 `CUET_AGY_AUTH_DIR`。直接配置模型凭据环境变量也仍然可用。
+
+网页提供：
+
+- 角色行动、剧情方向、写作要求、OOC 输入，以及完成后的正文；输入草稿在当前浏览器会话中保存。
+- 后台运行进度、停止、记录阅读、恢复（含增加时间预算与重置纠错）、在新分支重新生成。
+- YAML / JSON 设定和 Notebook 编辑、创建 Lore / Status 文件、删除 Lore / Status 文件、只读查看正文。保存和删除立即生成 Git 版本，版本冲突或工作区有未提交修改时拒绝覆盖。
+- 知识索引与检索、环境检查、Gemini 模型目录和真实 Provider 测试。
+- 历史版本列表、创建和切换故事分支。
+
+关闭网页不会停止后台模型运行，重新打开可重新连接正在执行的任务。关闭服务会请求停止任务；重启服务后从“运行记录”恢复。后台任务的页面缓存只在当前服务进程中保留，故事执行日志和已接受结果持久保存。账号首次导入仍使用前述本地 `auth import-dsh` 命令；网页不接收或展示服务商密钥。
+
+手机和电脑连接同一可信局域网后，用以下方式启动：
+
+```sh
+npm run web -- --host 0.0.0.0
+```
+
+手机打开终端显示的“局域网”地址，并输入访问口令。手机页面使用单列布局和可横向滑动的导航。该服务是个人工作台，口令拥有读取故事、修改设定和调用模型的权限；当前使用 HTTP，请勿直接暴露到公网。需要远程访问时应另行配置 HTTPS 或私有网络。
+
+可用 `--port 3211` 修改端口，用 `CUET_WEB_TOKEN` 环境变量固定访问口令。终端按 Ctrl+C 停止服务。
