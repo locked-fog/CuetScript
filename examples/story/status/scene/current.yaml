@@ -1,0 +1,7 @@
+schema_version: 1
+id: scene.current
+kind: scene
+status:
+  location: 白塔接待室
+  time: 午后
+  objects: 桌上有来访登记册；门旁有一张空椅子。

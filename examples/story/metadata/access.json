@@ -1,0 +1,7 @@
+[
+  {"path":"status/characters/keeper.yaml","pointer":"/status","audience":["character.keeper"]},
+  {"path":"status/characters/traveler.yaml","pointer":"/status","audience":["public"]},
+  {"path":"status/scene/current.yaml","pointer":"/status","audience":["public"]},
+  {"path":"lore/tower.yaml","pointer":"","audience":["public"]},
+  {"path":"lore/garden.yaml","pointer":"","audience":["public"]}
+]

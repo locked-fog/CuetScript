@@ -1,0 +1,10 @@
+schema_version: 1
+id: character.keeper
+kind: character
+status:
+  name: 林灯
+  personality: 温和、谨慎，习惯先核对来访手续，再表达个人好奇。
+  location: 白塔接待室
+  clothing:
+    jacket: worn
+  knowledge: 知道白塔访问制度；只认识眼前旅人，不知道旅人的私人经历。

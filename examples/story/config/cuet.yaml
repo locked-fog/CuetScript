@@ -1,0 +1,38 @@
+schema_version: 1
+deepseek:
+  endpoint: https://api.deepseek.com
+  credentialEnv: DEEPSEEK_API_KEY
+slots:
+  orchestrator:
+    model: deepseek-v4-flash
+    thinking: true
+    effort: low
+    maxTokens: 4096
+  writer:
+    model: deepseek-v4-flash
+    thinking: false
+    maxTokens: 4096
+    temperature: 0.8
+  actor:
+    model: deepseek-v4-flash
+    thinking: false
+    maxTokens: 2048
+    temperature: 0.8
+rag:
+  endpoint: https://api.siliconflow.cn/v1
+  credentialEnv: SILICONFLOW_API_KEY
+  embeddingModel: Qwen/Qwen3-Embedding-8B
+  rerankerModel: Qwen/Qwen3-Reranker-8B
+  dimensions: 1024
+  chunkChars: 2000
+  topK: 20
+  topN: 5
+budget:
+  calls: 60
+  tokens: 150000
+  seconds: 900
+  corrections: 3
+userControl:
+  characters: [character.traveler]
+  allowMinorActions: false
+  resultDeclarations: attempt

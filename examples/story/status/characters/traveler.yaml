@@ -1,0 +1,6 @@
+schema_version: 1
+id: character.traveler
+kind: character
+status:
+  name: 旅人
+  location: 白塔接待室
